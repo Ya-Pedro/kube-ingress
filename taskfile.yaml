@@ -44,8 +44,9 @@ tasks:
       - kubectl apply -f ingress.yaml
   commit:
     cmds:
+      - git add .
       - git commit -m "vse"
-      - 
+      - git push 
 
 
   release:
