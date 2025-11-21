@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-api
+  namespace: sirius
+spec:
+  selector:
+      app: dep-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-info
+  namespace: sirius
+spec:
+  selector:
+      app: dep-info
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-login
+  namespace: sirius
+spec:
+  selector:
+      app: dep-login
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

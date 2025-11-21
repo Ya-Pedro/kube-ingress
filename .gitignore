@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Linux
+*~
+.#*
+*.bak
+*.swp
+
+# IDE/Editor specific
+# Visual Studio Code
+.vscode/
+
+# IntelliJ/GoLand
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Environment variables file
+.env
+.token
+
+bin

@@ -1,0 +1,60 @@
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  # prepare:
+  #   cmd: go mod tidy
+
+  # lint:
+  #   cmds:
+  #     - golangci-lint run ./cmd
+
+  # test:
+  #   cmds:
+  #     - go test -cover ./cmd
+
+  # compile:
+  #   cmd: GOOS=linux go build -o ./bin/goapp ./goapp
+
+  build:
+    cmds: 
+      - docker build --pull --rm -f 'appinfo.Dockerfile' -t 'appinfo:latest-info' '.'
+      - docker build --pull --rm -f 'appapi.Dockerfile' -t 'appapi:latest-api' '.'
+      - docker build --pull --rm -f 'applogin.Dockerfile' -t 'applogin:latest-login' '.'
+
+  push:
+    cmds:
+      - docker tag 'appinfo:latest-info' ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-info
+      - docker tag 'appapi:latest-api' ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-api
+      - docker tag 'applogin:latest-login' ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-login
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-info
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-api
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-login
+
+  deploy:
+    cmds:
+      - kubectl create namespace sirius
+      - kubectl apply -f config-env-api.yaml
+      - kubectl apply -f config-env-info.yaml
+      - kubectl apply -f config-env-login.yaml
+      - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
+      - kubectl apply -f ingress.yaml
+  commit:
+    cmds:
+      - git commit -m "vse"
+      - 
+
+
+  release:
+    cmds:
+      #- task: prepare
+      #- task: lint
+      #- task: test
+      #- task: compile
+      - task: build
+      - task: push
+      - task: deploy
+      - task: commit
