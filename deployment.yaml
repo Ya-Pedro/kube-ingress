@@ -7,6 +7,7 @@ spec:
   selector:
     matchLabels:
       app: dep-api
+  replicas: 5
   template:
     metadata:
       labels:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
         - name: appapi
-          image: appapi:latest
+          image: yapedro/appapi:latest
           imagePullPolicy: IfNotPresent
           resources:
             requests:
@@ -38,6 +39,7 @@ spec:
   selector:
     matchLabels:
       app: dep-info
+  replicas: 1
   template:
     metadata:
       labels:
@@ -45,7 +47,7 @@ spec:
     spec:
       containers:
         - name: appinfo
-          image: appinfo:latest
+          image: yapedro/appinfo:latest
           imagePullPolicy: IfNotPresent
           resources:
             requests:
@@ -69,6 +71,7 @@ spec:
   selector:
     matchLabels:
       app: dep-login
+  replicas: 2
   template:
     metadata:
       labels:
@@ -76,7 +79,7 @@ spec:
     spec:
       containers:
         - name: applogin
-          image: applogin:latest
+          image: yapedro/applogin:latest
           imagePullPolicy: IfNotPresent
           resources:
             requests:

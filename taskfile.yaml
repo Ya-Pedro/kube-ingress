@@ -20,32 +20,35 @@ tasks:
 
   build:
     cmds: 
-      - docker build --pull --rm -f 'appinfo.Dockerfile' -t 'appinfo:latest-info' '.'
-      - docker build --pull --rm -f 'appapi.Dockerfile' -t 'appapi:latest-api' '.'
-      - docker build --pull --rm -f 'applogin.Dockerfile' -t 'applogin:latest-login' '.'
+      - docker build --pull --rm -f 'appinfo.Dockerfile' -t ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME1}:latest '.'
+      - docker build --pull --rm -f 'appapi.Dockerfile' -t ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME2}:latest '.'
+      - docker build --pull --rm -f 'applogin.Dockerfile' -t ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME3}:latest '.'
 
   push:
     cmds:
-      - docker tag 'appinfo:latest-info' ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-info
-      - docker tag 'appapi:latest-api' ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-api
-      - docker tag 'applogin:latest-login' ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-login
-      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-info
-      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-api
-      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-login
+      - docker tag ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME1}:latest ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME1}:${APP_IMAGE_TAG}
+      - docker tag ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME2}:latest ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME2}:${APP_IMAGE_TAG}
+      - docker tag ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME3}:latest ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME3}:${APP_IMAGE_TAG}
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME1}:${APP_IMAGE_TAG}
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME2}:${APP_IMAGE_TAG}
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME3}:${APP_IMAGE_TAG}
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME1}:latest
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME2}:latest
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME3}:latest
 
   deploy:
     cmds:
       - kubectl create namespace sirius
-      - kubectl apply -f config-env-api.yaml
-      - kubectl apply -f config-env-info.yaml
-      - kubectl apply -f config-env-login.yaml
-      - kubectl apply -f deployment.yaml
-      - kubectl apply -f service.yaml
-      - kubectl apply -f ingress.yaml
+      - kubectl apply -f config-env-api.yaml -n sirius
+      - kubectl apply -f config-env-info.yaml -n sirius
+      - kubectl apply -f config-env-login.yaml -n sirius
+      - kubectl apply -f deployment.yaml -n sirius
+      - kubectl apply -f service.yaml -n sirius
+      - kubectl apply -f ingress.yaml -n sirius
   commit:
     cmds:
       - git add .
-      - git commit -m "vse"
+      - git commit -m "vse2.0"
       - git push 
 
 
